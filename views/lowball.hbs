@@ -1,0 +1,36 @@
+{{!-- <h1>
+    Страница понижающих показателей
+</h1> --}}
+<body>
+    
+    <div class="overlay content" id="modal-2">
+        <form method="post">
+		    <div class="contentoverlay">
+                <div class="popap">
+                    <table id = 'sf'>
+                        <input class="form-control" type="text" placeholder="Параметры для фильтрации" id="search-text" onkeyup="filter(this, 'sf')">
+                            <thead>
+                                <tr>
+                                    <th><center>ФИО</center></th>
+                                    <th><center>Должность</center></th>
+                                    <th><center>Номер ЭК</center></th>
+                                    <th><center>Добавить Понижающие показатели</center></th>
+                                </tr>
+                            </thead>
+                        {{#each lowBallData}}
+                        <tbody>
+                            <tr>
+                                <td>{{this.last_name}} {{this.name_real}} {{this.patronymic}}</td>
+                                <td>{{this.position}}</td>
+                                <td>{{this.id_ek}}</td>
+                                <td><center><a href="" class="floating-button">Добавить</a></center></td>
+                            </tr>
+                        </tbody>
+                        {{/each}}
+                    </table>
+                    {{!-- <center><button class="floating-buttonSvod" onclick="close_popap('modal-2')">Закрыть</button></center> --}}
+                </div>
+		    </div>
+        </form>
+	</div>
+</body>

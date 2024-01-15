@@ -1,0 +1,37 @@
+.nav-wrapper {
+    padding: 0 2rem;
+}
+.nav {
+  background-color: #00b8bb;
+}
+
+body {
+  background-color: #00a0a3; /* Цвет фона и путь к файлу */;
+}
+.login-win {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2rem 2rem;
+  background: white; /* Цвет фона и путь к файлу */
+  border-radius: 10px;
+}
+.content {
+  margin-top: 0.5rem;
+  padding: 2rem 2rem;
+  background: url(webStuff/images/background39.png); /* Цвет фона и путь к файлу */
+}
+
+.construction {
+  color: red;
+}
+
+.alert {
+  padding: .5rem 1rem;
+  border-radius: 10px;
+  text-align: center;
+  margin-bottom: 1rem;
+  background: rgba(255, 0, 0, .3);
+  color: red;
+}

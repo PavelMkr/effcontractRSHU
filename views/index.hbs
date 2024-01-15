@@ -1,0 +1,26 @@
+<div class="login-win">
+		<div>
+			<div>
+				{{#if errorStatus}}
+					<p class="alert">{{errorStatus}}</p>
+				{{/if}}
+				<form action="/login" method="post">
+					<div class="wrap-input100 validate-input" data-validate = "Введите почту">
+						<input class="input100" type="text" name="username" placeholder="Почта">
+						<span class="focus-input100" data-placeholder="&#xe82a;"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate="Введите пароль">
+						<input class="input100" type="password" name="password" placeholder="Пароль">
+						<span class="focus-input100" data-placeholder="&#xe80f;"></span>
+					</div>
+
+					<div class="container-login100-form-btn m-t-32">
+						<button class="login100-form-btn">
+							Войти
+						</button>
+					</div>
+				</form>				
+			</div>
+		</div>
+	</div>

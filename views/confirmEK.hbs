@@ -1,0 +1,28 @@
+<div class="overlay content" id="modal-3">
+
+		    <div class="contentoverlay">
+                <div class="popap">
+                    <table class="striped centered">
+                        <thead>
+                            <tr>
+                                <th><center>ФИО</center></th>
+                                {{!-- <th><center>Должность</center></th> --}}
+                                <th><center>Номер ЭК</center></th>
+                                <th><center>Подтвердить ЭК</center></th>
+                            </tr>
+                        </thead>
+                        {{#each confirmData}}
+                        <tbody>
+                                <tr>
+                                    <td>{{ this.last_name}} {{this.name_real}} {{this.patronymic}}</td>
+                                    <td{{ this.position }}></td>
+                                    <td>{{ this.id_ek }}</td>
+                                    <td><a href="" class="floating-button">Открыть папку</a></td>
+                                </tr>  
+                        </tbody>  
+                        {{/each}}   
+                    </table>
+                </div>
+		    </div>
+        </form>
+	</div>

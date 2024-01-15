@@ -1,0 +1,45 @@
+<body>
+    {{!-- <div class="overlay" id="modal-2">
+        <div class="contentoverlay">
+            <div class="popap">
+                <table id='sf1'>
+                    <input class="form-control" type="text" placeholder="Параметры для фильтрации" id="search-text" onkeyup="filter(this, 'sf1')">
+                    <tr>  
+                        <th><center>Номер ЭК</center></th>
+                        <th><center>ФИО</center></th>
+                        <th><center>Кол-во баллов</center></th>
+                    </tr>
+                    {{#each checkedData}}
+                        <tr>
+                            <td>{{this.id_ek}}</td>
+                            <td>{{this.last_name}} {{this.name_real}} {{this.patronymic}}</td>
+                            <td>{{this.all_ek}}</td>
+                        </tr>
+                    {{/each}}
+                </table>
+                <center><button class="floating-buttonSvod" onclick="close_popap('modal-2')">Закрыть</button></center>
+            </div>
+        </div>
+    </div> --}}
+    <div class="content">
+        <table class="striped centered">
+            <thead>
+                <tr>
+                    <th><center>Номер ЭК</center></th>
+                    <th><center>ФИО</center></th>
+                    <th><center>Кол-во баллов</center></th> 
+                </tr>
+            </thead>
+
+            <tbody>
+                {{#each checkedData}}
+                    <tr>
+                        <td>{{this.id_ek}}</td>
+                        <td>{{this.last_name}} {{this.name_real}} {{this.patronymic}}</td>
+                        <td>{{this.all_ek}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</body>

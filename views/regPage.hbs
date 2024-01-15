@@ -1,0 +1,75 @@
+{{!-- <h1>
+    Страница регистрации пользователей
+</h1> --}}
+<div class="overlay construction content" id="modal-3">
+                <div class="container-login100">
+                    <div class="wrap-login100 p-t-30 p-b-50">
+                        <form class="login100-form validate-form p-b-33 p-t-5" method="post" action="register.php">
+                            <div class="wrap-input100 validate-input" data-validate="Введите фамилию">
+                                <input class="input100" type="text" name="lastname" placeholder="Фамилия">
+                                <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                            </div>
+                            <div class="wrap-input100 validate-input" data-validate="Введите имя">
+                                <input class="input100" type="text" name="firstname" placeholder="Имя">
+                                <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                            </div>
+                            <div class="wrap-input100 validate-input" data-validate="Введите отчество">
+                                <input class="input100" type="text" name="patronymic" placeholder="Отчество">
+                                <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                            </div>
+                            <!--<div class="wrap-input100 validate-input" data-validate = "Введите должность">
+                                <input class="input100" type="text" name="doljnost" placeholder="Должность">
+                                <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                            </div>-->
+                            <center>
+                                <section>
+                                    <label class="wrap-input100 validate-input">Выберите должность:</label>
+                                    <select class="input100" name="doljnost">
+                                        <option value=""></option>
+                                        <?php
+                                        while ($row = mysqli_fetch_assoc($all_positions)) {
+                                            echo '<option value="' . $row['position'] . '">' . $row['position'] . '</option>';
+                                        }
+                                        ?>
+                                    </select>
+                                </section>
+                            </center>
+                            <div class="wrap-input100 validate-input" data-validate="Введите ставку">
+                                <input class="input100" type="text" name="stavka" placeholder="Ставка">
+                                <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                            </div>
+                            <!--<div class="wrap-input100 validate-input" data-validate = "Введите институт или факультет">
+                                <input class="input100" type="text" name="fakultet" placeholder="Факультет">
+                                <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                            </div>-->
+                            <center>
+                                <section>
+                                    <label class="wrap-input100 validate-input">Выберите факультет:</label>
+                                    <select class="input100" name="fakultet">
+                                        <option value=""></option>
+                                        <?php
+                                        while ($row = mysqli_fetch_assoc($all_departments)) {
+                                            echo '<option value="' . $row['department'] . '">' . $row['department'] . '</option>';
+                                        }
+                                        ?>
+                                    </select>
+                                </section>
+                            </center>
+                            <div class="wrap-input100 validate-input" data-validate="Введите почту">
+                                <input class="input100" type="text" name="username" placeholder="Почта">
+                                <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+                            </div>
+                            <div class="wrap-input100 validate-input" data-validate="Введите пароль">
+                                <input class="input100" type="password" name="pass" placeholder="Пароль">
+                                <span class="focus-input100" data-placeholder="&#xe80f;"></span>
+                            </div>
+                            <div class="container-login100-form-btn m-t-32">
+                                <button class="login100-form-btn" type="submit">Зарегистрировать</button>
+                            </div>
+                            <div class="container-login100-form-btn m-t-32">
+                                <button class="login100-form-btn" type="button" onclick="close_popap('modal-2')">Закрыть</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+    </div>
