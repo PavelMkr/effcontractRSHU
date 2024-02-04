@@ -1,4 +1,4 @@
-// routes/login.js
+// роут авторизации
 const { Router } = require('express');
 const router = Router();
 const session = require('express-session'); // Модуль с сессией

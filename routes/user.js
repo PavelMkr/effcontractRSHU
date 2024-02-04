@@ -1,3 +1,5 @@
+// роут авторизированных пользователей
+
 const {Router} = require('express');
 const router = Router();
 const db = require('../db'); // Модуль с базой данных

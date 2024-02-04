@@ -1,11 +1,12 @@
+//Основной файл проекта
 // Подключенные модули
 const express = require('express') // Подключаем библиотеку Express и сохраняем её в переменной express
-const session = require('express-session');
+const session = require('express-session'); // Подключение сессий
 const path = require('path') // Подключаем библиотеку path для работы с путями файлов
 const exphbs = require('express-handlebars')// Подключаем библиотеку express-handlebars для работы с шаблонами Handlebars
 const flash = require('connect-flash'); // Подключаем модуль connect-flash для работы с flash-сообщениями
-const db = require('./db');
-const errorHandler= require('./middleware/error');
+const db = require('./db'); // Подключение бд
+const errorHandler= require('./middleware/error'); // Подключение ошибок (404)
 
 // Подключаем модули с маршрутами (роутами) для различных страниц
 const homeRoutes = require('./routes/home.js');

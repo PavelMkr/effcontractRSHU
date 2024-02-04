@@ -27,11 +27,13 @@ const executeQuery = async (query, values) => {
     });
 };
 
+//debug вывод всех работников
 // connection.query('SELECT * FROM employees', (error, results, fields) => {
 //     if (error) throw error;
 //     console.log('The result is: ', results);
 // });
 
+//debug закрытие соединения с бд
 // connection.end((err) => {
 //     if (err) {
 //         console.error('Error closing database connection: ' + err.stack);
