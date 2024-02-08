@@ -1,4 +1,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 
     //Скрипт на странице admin_user_ek в старом проекте, надо пересмотреть
@@ -22,14 +23,80 @@
 
     {{#if isDekaDir}}
         // Скрипты страницы, если это декан и/или директор
+        $(document).ready(function() {
+            $('#uploadForm').submit(function(e) {
+                e.preventDefault(); // Предотвращаем отправку формы по умолчанию
+
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: '/upload', // URL, куда отправляется запрос
+                    type: 'POST', // Метод запроса
+                    data: formData,
+                    processData: false, // Не обрабатывать данные перед отправкой
+                    contentType: false, // Не устанавливать Content-Type заголовок
+                    success: function(response) {
+                        alert('Файл успешно загружен');
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Ошибка загрузки файла: ' + error);
+                    }
+                });
+            });
+        });
     {{/if}}
 
     {{#if isZavKaf}}
         // Скрипты страницы, если это завкафедры
+        $(document).ready(function() {
+            $('#uploadForm').submit(function(e) {
+                e.preventDefault(); // Предотвращаем отправку формы по умолчанию
+
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: '/upload', // URL, куда отправляется запрос
+                    type: 'POST', // Метод запроса
+                    data: formData,
+                    processData: false, // Не обрабатывать данные перед отправкой
+                    contentType: false, // Не устанавливать Content-Type заголовок
+                    success: function(response) {
+                        alert('Файл успешно загружен');
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Ошибка загрузки файла: ' + error);
+                    }
+                });
+            });
+        });
     {{/if}}
         
     {{#if isPrepod}}
         // Скрипты страницы, если это преподаватель
+
+        // Скрипт загрузки файлов
+        $(document).ready(function() {
+            $('#uploadForm').submit(function(e) {
+                e.preventDefault(); // Предотвращаем отправку формы по умолчанию
+
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: '/upload', // URL, куда отправляется запрос
+                    type: 'POST', // Метод запроса
+                    data: formData,
+                    processData: false, // Не обрабатывать данные перед отправкой
+                    contentType: false, // Не устанавливать Content-Type заголовок
+                    success: function(response) {
+                        alert('Файл успешно загружен');
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Ошибка загрузки файла: ' + error);
+                    }
+                });
+            });
+        });
+        
     {{/if}}
 
     {{#if isAdmin}}

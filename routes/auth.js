@@ -14,7 +14,7 @@ router.use(
   );
 
 router.post('/login', (req, res) => {
-    const { username, password } = req.body;
+    const { username, password } = req.body; // Данные не зашифрованы
 
     // Поиск пользователя в базе данных
     db.query('SELECT * FROM employees WHERE login = ? AND password = ?', [username, password], (error, results) => {

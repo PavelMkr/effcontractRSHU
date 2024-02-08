@@ -12,6 +12,7 @@ const errorHandler= require('./middleware/error'); // Подключение о�
 const homeRoutes = require('./routes/home.js');
 const userRoutes = require('./routes/user.js');
 const authRoutes = require('./routes/auth.js');
+const uploadRoutes = require('./routes/upload.js');
 
 
 const app = express()// Создаем экземпляр приложения Express
@@ -61,6 +62,7 @@ app.use(flash())
 app.use(homeRoutes)
 app.use(userRoutes)
 app.use(authRoutes)
+app.use(uploadRoutes)
 
 app.use(errorHandler)
 
