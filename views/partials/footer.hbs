@@ -76,26 +76,46 @@
 
         // Скрипт загрузки файлов
         $(document).ready(function() {
-            $('#uploadForm').submit(function(e) {
+            $('#upload_form').submit(function(e) {
                 e.preventDefault(); // Предотвращаем отправку формы по умолчанию
 
                 var formData = new FormData(this);
 
                 $.ajax({
-                    url: '/upload', // URL, куда отправляется запрос
-                    type: 'POST', // Метод запроса
+                    url: '/upload',
+                    type: 'POST',
                     data: formData,
-                    processData: false, // Не обрабатывать данные перед отправкой
-                    contentType: false, // Не устанавливать Content-Type заголовок
+                    processData: false,
+                    contentType: false,
                     success: function(response) {
-                        alert('Файл успешно загружен');
+                        // Отображаем уведомление на странице
+                        showNotification(response.message);
+                        $('input[name="files[]"]').val(''); // Очистка инпутов
                     },
                     error: function(xhr, status, error) {
-                        alert('Ошибка загрузки файла: ' + error);
+                        // Отображаем уведомление о ошибке
+                        showNotification('Ошибка загрузки файла: ' + error, true);
                     }
                 });
             });
+
+            // Функция для отображения уведомлений
+            function showNotification(message, isError = false) {
+                var notification = $('#notification');
+                notification.text(message);
+
+                // Добавляем класс в зависимости от типа уведомления (ошибки или успеха)
+                if (isError) {
+                    notification.addClass('error');
+                } else {
+                    notification.removeClass('error');
+                }
+
+                // Плавно показываем и скрываем уведомление
+                notification.fadeIn(500).delay(3000).fadeOut(500);
+            }
         });
+
         
     {{/if}}
 

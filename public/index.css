@@ -37,3 +37,18 @@ body {
   background: rgba(255, 0, 0, .3);
   color: red;
 }
+
+#notification {
+  display: none;
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px;
+  background-color: #4CAF50; /* Цвет для уведомлений об успехе */
+  color: #fff;
+}
+
+#notification.error {
+  background-color: #f44336; /* Цвет для уведомлений об ошибке */
+}

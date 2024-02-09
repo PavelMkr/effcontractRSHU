@@ -16,30 +16,32 @@ console.log(
     uploadDir, upload
 )
 // Маршрут для обработки POST-запроса на загрузку файла
-router.post('/upload', upload.single('files3[]'), (req, res) => {
-    // Получаем информацию о загруженном файле из объекта запроса
-    const file = req.file;
-    console.log(file);
-    if (!file) {
-        return res.status(400).send('Нет файла для загрузки');
+router.post('/upload', upload.array('files[]'), (req, res) => {
+    const username = req.session.user.login;
+
+    // Проверка наличия загруженных файлов
+    if (!req.files || req.files.length === 0) {
+        return res.status(400).send('Нет файлов для загрузки');
     }
 
-    // Создаем целевой путь для сохранения файла
-    const username = req.session.user.login;
-    //const targetPath = `${uploadDir}/${username}/${file.originalname}`;
-    const targetPath = `${uploadDir}/${username}/${file.originalname}`;
-    console.log(req.session.user.login);
-    console.log(targetPath);
-    // Перемещаем загруженный файл в целевую папку Исправить: кириллицу не понимает
-    fs.rename(file.path, targetPath, (err) => {
-        if (err) {
-            console.error('Ошибка перемещения файла:', err);
-            return res.status(500).send('Ошибка перемещения файла');
-        }
+    // Обработка каждого загруженного файла
+    req.files.forEach(file => {
+        const targetPath = `${uploadDir}/${username}/${file.originalname}`;
+        console.log(targetPath);
 
-        // Если перемещение прошло успешно, отправляем клиенту уведомление
-        res.status(200).send('Файл успешно загружен');
+        // Перемещаем загруженный файл в целевую папку
+        fs.rename(file.path, targetPath, (err) => {
+            if (err) {
+                console.error('Ошибка перемещения файла:', err);
+                return res.status(500).send('Ошибка перемещения файла');
+            }
+        });
     });
+
+    // Отправляем клиенту ответ после обработки всех файлов
+    res.status(200).json({ message: 'Файлы успешно загружены' });
 });
+
+
 
 module.exports = router;
