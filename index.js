@@ -32,12 +32,12 @@ const hbs = exphbs.create({
   helpers: {
     funcNotChecked: function (educator_id) {
       const notChecked = db.executeQuery(`SELECT COUNT(*) as not_checked FROM eff_contract WHERE checked = 0 AND educator_id = ?`, [educator_id]);
-      console.log(notChecked[0].not_checked);
+      //console.log(notChecked[0].not_checked);
       return notChecked[0].not_checked;
     },
     funcAllEk: function (educator_id) {
       const allEk = db.executeQuery(`SELECT COUNT(*) as all_ek FROM eff_contract WHERE educator_id = ?`, [educator_id]);
-      console.log(allEk[0].all_ek);
+      //console.log(allEk[0].all_ek);
       return allEk[0].all_ek;
     },
     or: function () {

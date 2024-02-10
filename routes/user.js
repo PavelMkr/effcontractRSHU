@@ -50,10 +50,10 @@ router.get('/user/admin', async (req, res) => {
 })
 // Для всех
 router.get('/profile',(req, res) => {
-    console.log(req.session.isAdmin);
-    console.log(req.session.isZavKaf);
-    console.log(req.session.isDekaDir);
-    console.log(req.session.isPrepod);
+    //console.log(req.session.isAdmin);
+    //console.log(req.session.isZavKaf);
+    //console.log(req.session.isDekaDir);
+    //console.log(req.session.isPrepod);
     //console.log(req.session.user.position);
     res.render('profile', {
         title: `Профиль`,
@@ -135,7 +135,7 @@ router.get('/reducingIndicators', async (req,res) => {
         );
     `, [req.session.user.department]); // 
     //console.log(req.session.institute)
-    console.log(lowBallData)
+    //console.log(lowBallData)
     
     res.render('lowball', {
         title: `Страница понижающих показателей`,
@@ -156,8 +156,8 @@ router.get('/confirmDocument', async (req,res) => {
     WHERE
         ef.educator_id = emp.educator_id and ef.checked = 0 and emp.department = ? and emp.position = "Prepodavatel"
     `, [req.session.user.department]);
-    console.log('Инфа:')
-    console.log(confirmData)
+    //console.log('Инфа:')
+    //console.log(confirmData)
     //console.log(req.session.user)
     res.render('confirmEK', {
         title: `Страница подтверждения документов`,
