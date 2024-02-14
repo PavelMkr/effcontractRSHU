@@ -23,64 +23,51 @@
 
     {{#if isDekaDir}}
         // Скрипты страницы, если это декан и/или директор
-        $(document).ready(function() {
-            $('#uploadForm').submit(function(e) {
-                e.preventDefault(); // Предотвращаем отправку формы по умолчанию
+        
+        // Скрипт загрузки файлов
+        
 
-                var formData = new FormData(this);
 
-                $.ajax({
-                    url: '/upload', // URL, куда отправляется запрос
-                    type: 'POST', // Метод запроса
-                    data: formData,
-                    processData: false, // Не обрабатывать данные перед отправкой
-                    contentType: false, // Не устанавливать Content-Type заголовок
-                    success: function(response) {
-                        alert('Файл успешно загружен');
-                    },
-                    error: function(xhr, status, error) {
-                        alert('Ошибка загрузки файла: ' + error);
-                    }
-                });
-            });
-        });
+
     {{/if}}
 
     {{#if isZavKaf}}
         // Скрипты страницы, если это завкафедры
-        $(document).ready(function() {
-            $('#uploadForm').submit(function(e) {
-                e.preventDefault(); // Предотвращаем отправку формы по умолчанию
+        
+        // Скрипт загрузки файлов
 
-                var formData = new FormData(this);
 
-                $.ajax({
-                    url: '/upload', // URL, куда отправляется запрос
-                    type: 'POST', // Метод запроса
-                    data: formData,
-                    processData: false, // Не обрабатывать данные перед отправкой
-                    contentType: false, // Не устанавливать Content-Type заголовок
-                    success: function(response) {
-                        alert('Файл успешно загружен');
-                    },
-                    error: function(xhr, status, error) {
-                        alert('Ошибка загрузки файла: ' + error);
-                    }
-                });
-            });
-        });
     {{/if}}
         
     {{#if isPrepod}}
         // Скрипты страницы, если это преподаватель
 
         // Скрипт загрузки файлов
-        $(document).ready(function() {
-            $('#upload_form').submit(function(e) {
-                e.preventDefault(); // Предотвращаем отправку формы по умолчанию
+       $(document).ready(function() {
+            // Обработчик события клика на кнопку "Отправить"
+            $('input[name="uploadBtn"]').click(function(event) {
+                event.preventDefault(); // Предотвращаем стандартное поведение кнопки
 
-                var formData = new FormData(this);
+                // Создаем объект FormData для всех файлов
+                var formData = new FormData();
 
+                // Цикл по каждому элементу с классом file-input
+                $('.file-input').each(function() {
+                    var files = $(this)[0].files;
+
+                    // Добавляем файлы и информацию о них в formData
+                    for (var i = 0; i < files.length; i++) {
+                        var file = files[i];
+                        var index = $(this).data('index');
+                        var idInput = $(this).data('id-input');
+
+                        formData.append('files[]', file);
+                        formData.append('index[]', index);
+                        formData.append('id_input[]', idInput);
+                    }
+                });
+
+                // Отправляем AJAX запрос на сервер
                 $.ajax({
                     url: '/upload',
                     type: 'POST',
@@ -90,7 +77,6 @@
                     success: function(response) {
                         // Отображаем уведомление на странице
                         showNotification(response.message);
-                        $('input[name="files[]"]').val(''); // Очистка инпутов
                     },
                     error: function(xhr, status, error) {
                         // Отображаем уведомление о ошибке
@@ -115,6 +101,9 @@
                 notification.fadeIn(500).delay(3000).fadeOut(500);
             }
         });
+
+
+
 
         
     {{/if}}
