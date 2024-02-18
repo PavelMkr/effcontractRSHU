@@ -1,116 +1,118 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+{{!-- Скрипты страницы, если это декан и/или директор --}}
+{{#if isDekaDir}}  
+{{/if}}
+    
+{{!-- Скрипты страницы, если это завкафедры --}}
+{{#if isZavKaf}} 
+{{/if}}
+    
+{{!-- Скрипты страницы, если это преподаватель  --}}
+{{#if isPrepod}}
 <script>
+     // Скрипт загрузки файлов
+    $(document).ready(function() {
+        // Обработчик события клика на кнопку "Отправить"
+        $('input[name="uploadBtn"]').click(function(event) {
+            event.preventDefault(); // Предотвращаем стандартное поведение кнопки
 
-    //Скрипт на странице admin_user_ek в старом проекте, надо пересмотреть
-    //
-    //document.getElementById('confirm-button').addEventListener('click', function () {
-    //    var checkboxes = document.getElementsByName('selected_docs[]');
-    //    var selectedDocs = [];
-    //    for (var i = 0; i < checkboxes.length; i++) {
-    //        if (checkboxes[i].checked) {
-    //            selectedDocs.push(checkboxes[i].value);
-    //       }
-    //    }
-    //
-    //    if (selectedDocs.length === 0) {
-    //        alert("Выберите хотя бы один документ.");
-    //    } else {
-    //        var selectedDocsString = selectedDocs.join(',');
-    //        window.location.href = 'admin_confirm.php?id=<?php echo $id; ?>&selected_docs=' + selectedDocsString;
-    //    }
-    //});
+            // Создаем объект FormData для всех файлов
+            var formData = new FormData();
 
-    {{#if isDekaDir}}
-        // Скрипты страницы, если это декан и/или директор
-        
-        // Скрипт загрузки файлов
-        
+            // Цикл по каждому элементу с классом file-input
+            $('.file-input').each(function() {
+                var files = $(this)[0].files;
 
+                // Добавляем файлы и информацию о них в formData
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    var index = $(this).data('index');
+                    var idInput = $(this).data('id-input');
+                    var idResult = $(this).data('result-id');
+                    var count = $('#first' + idResult).val(); // Получаем значение поля ввода
+                    var point = $('#result' + idResult).text(); // Получаем текстовое содержимое элемента
+                    console.log(
+                        file, 
+                        index, 
+                        idInput, 
+                        idResult,
+                        count, 
+                        point 
+                    );
 
-
-    {{/if}}
-
-    {{#if isZavKaf}}
-        // Скрипты страницы, если это завкафедры
-        
-        // Скрипт загрузки файлов
-
-
-    {{/if}}
-        
-    {{#if isPrepod}}
-        // Скрипты страницы, если это преподаватель
-
-        // Скрипт загрузки файлов
-       $(document).ready(function() {
-            // Обработчик события клика на кнопку "Отправить"
-            $('input[name="uploadBtn"]').click(function(event) {
-                event.preventDefault(); // Предотвращаем стандартное поведение кнопки
-
-                // Создаем объект FormData для всех файлов
-                var formData = new FormData();
-
-                // Цикл по каждому элементу с классом file-input
-                $('.file-input').each(function() {
-                    var files = $(this)[0].files;
-
-                    // Добавляем файлы и информацию о них в formData
-                    for (var i = 0; i < files.length; i++) {
-                        var file = files[i];
-                        var index = $(this).data('index');
-                        var idInput = $(this).data('id-input');
-
-                        formData.append('files[]', file);
-                        formData.append('index[]', index);
-                        formData.append('id_input[]', idInput);
-                    }
-                });
-
-                // Отправляем AJAX запрос на сервер
-                $.ajax({
-                    url: '/upload',
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        // Отображаем уведомление на странице
-                        showNotification(response.message);
-                    },
-                    error: function(xhr, status, error) {
-                        // Отображаем уведомление о ошибке
-                        showNotification('Ошибка загрузки файла: ' + error, true);
-                    }
-                });
+                    formData.append('files[]', file);
+                    formData.append('index[]', index);
+                    formData.append('id_input[]', idInput);
+                    formData.append('first[]', count);
+                    formData.append('result[]', point);
+                }
             });
 
-            // Функция для отображения уведомлений
-            function showNotification(message, isError = false) {
-                var notification = $('#notification');
-                notification.text(message);
-
-                // Добавляем класс в зависимости от типа уведомления (ошибки или успеха)
-                if (isError) {
-                    notification.addClass('error');
-                } else {
-                    notification.removeClass('error');
+            // Отправляем AJAX запрос на сервер
+            $.ajax({
+                url: '/upload',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    // Отображаем уведомление на странице
+                    showNotification(response.message);
+                },
+                error: function(xhr, status, error) {
+                    // Отображаем уведомление о ошибке
+                    showNotification('Ошибка загрузки файла: ' + error, true);
+                    $('input[name="files[]"]').val(''); // Очистка инпутов
                 }
-
-                // Плавно показываем и скрываем уведомление
-                notification.fadeIn(500).delay(3000).fadeOut(500);
-            }
+            });
         });
 
+        // Функция для отображения уведомлений
+        function showNotification(message, isError = false) {
+            var notification = $('#notification');
+            notification.text(message);
 
+            // Добавляем класс в зависимости от типа уведомления (ошибки или успеха)
+            if (isError) {
+                notification.addClass('error');
+            } else {
+                notification.removeClass('error');
+            }
 
+            // Плавно показываем и скрываем уведомление
+            notification.fadeIn(500).delay(3000).fadeOut(500);
+        }
+    });
 
-        
-    {{/if}}
+    // Сумма баллов
+    function mult(second,first,result) {
+        second.value = second
+        var first = document.getElementById(first).value;
+        document.getElementById(result).innerHTML = first * second;
+    }
 
-    {{#if isAdmin}}
-        // Скрипты страницы, если это админ
-    {{/if}}
-
-    
+    function sumballAll() {
+        var res ='result';
+        let i = 1
+        var names= [];
+        while (i < 80) {
+        name = res+i;
+        var chislo = document.getElementById(name).textContent;
+        names.push(chislo); 
+        i++;
+    }	
+        var sum = 0
+        for(var j = 0; j < names.length; j++){
+        names[j]=Number(names[j])
+        sum += names[j];
+        }
+        document.getElementById("result").innerText = sum;
+    }
 </script>
+{{/if}}
+
+{{!-- Скрипты страницы, если это админ --}}
+{{#if isAdmin}}     
+{{/if}}

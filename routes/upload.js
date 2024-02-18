@@ -22,7 +22,8 @@ const pool = new createPool({
 // Создаем объект multer для загрузки файлов
 const upload = multer({ 
     dest: uploadDir,
-    preservePath: true
+    preservePath: true,
+    encoding: 'utf-8'
 });
 
 // Маршрут для обработки POST-запроса на загрузку файла
@@ -56,9 +57,14 @@ router.post('/upload', upload.array('files[]'), async (req, res) => {
 
         // Цикл по каждому файлу
         for (let i = 0; i < req.files.length; i++) {
-            const file = req.files[i];
+            const file = req.files[i]; // Получаем файл
+            file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8') // Исправление названия файлов
             const index = req.body['index'][i]; // Получаем индекс из массива
             const idInput = req.body['id_input'][i]; // Получаем idInput из массива
+            const count = req.body['first'][i]; // Получаем count из массива
+            const point = req.body['result'][i]; // Получаем point из массива
+            console.log(count, point)
+
 
             const targetPath = `${uploadDir}/${username}/${effContractId}/${index}`;
             if (!fs.existsSync(targetPath)) {
@@ -77,7 +83,7 @@ router.post('/upload', upload.array('files[]'), async (req, res) => {
             await fs.promises.rename(file.path, `${targetPath}/${nameIndex} ${file.originalname}`);
 
             await connection.execute(
-                'INSERT INTO docs (id_ek, educator_id, id_index, count, value, file_name) VALUES (?, ?, ?, ?, ?, ?)', [effContractId, educatorId, idInput, 1, 1, file.originalname]);
+                'INSERT INTO docs (id_ek, educator_id, id_index, count, value, file_name) VALUES (?, ?, ?, ?, ?, ?)', [effContractId, educatorId, idInput, count, point, file.originalname]);
         }
 
         // Обновляем all_value в ЭК после загрузки файлов
