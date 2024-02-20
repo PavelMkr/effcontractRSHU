@@ -1,6 +1,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
 {{!-- Скрипты страницы, если это декан и/или директор --}}
 {{#if isDekaDir}}  
 {{/if}}
@@ -114,5 +115,49 @@
 {{/if}}
 
 {{!-- Скрипты страницы, если это админ --}}
-{{#if isAdmin}}     
+{{#if isAdmin}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+<script>
+    function filter(input, tableId) {
+        var searchText = input.value.toLowerCase();
+        var table = document.getElementById(tableId);
+        var rows = table.getElementsByTagName('tr');
+
+        for (var i = 0; i < rows.length; i++) {
+            var cells = rows[i].getElementsByTagName('td');
+            var found = false;
+            for (var j = 0; j < cells.length; j++) {
+                var cellText = cells[j].textContent.toLowerCase();
+                if (cellText.indexOf(searchText) > -1) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+    }
+
+</script>
+
+    {{#if isUserEk}}
+        <script>
+            document.getElementById('confirmButton').addEventListener('click', function() {
+            var checkboxes = document.getElementsByName('confirmEK');
+            var selectedIds = [];
+
+            // Проверяем, какие checkbox'ы выбраны
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    selectedIds.push(checkboxes[i].value);
+                }
+            }
+            });
+
+            console.log(selectedIds);
+        </script>
+    {{/if}}
 {{/if}}

@@ -76,7 +76,7 @@ router.post('/upload', upload.array('files[]'), async (req, res) => {
             }
 
             const nameIndexFull = await connection.execute(
-                'SELECT name FROM table_index WHERE `id index` = ?', [idInput]
+                'SELECT name FROM table_index WHERE id_index = ?', [idInput]
             );
             const nameIndex = nameIndexFull[0][0].name.split(' ')[0];
 

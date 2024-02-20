@@ -1,0 +1,60 @@
+<div class="content">
+			{{!-- <table id="sf2">
+				
+				<th colspan="7"><h2 class="mb-5"><center>Отчеты</center></h2></th>
+                <thead>
+                    <td>Выбор документов</td>
+                    <td>Номер ЭК</td>
+                    <td>Номер документа</td>
+                    <td>Пункт ЭК</td>
+                    <td>Время отправки</td>
+                    <td>Кол-во баллов</td>
+                    <td>Скачать документы</td>
+                </thead>
+
+				{{#each userEKData}}
+				<tbody>
+                    <p><label><input type="checkbox" name="confirmEK"><span>{{this.id_doc}}</span></input></center></p>
+					<td>{{this.id_ek}}</td>
+					<td>{{this.id_doc}}</td>
+					<td>{{this.index_name}}</td>
+					<td>{{this.id_period}}</td>
+					<td>{{this.value}}</td>
+                    <td><center><a href="">Скачать</a></center></td>
+            	</tbody>
+          		{{/each}}
+			</table> --}}
+
+            <table class="centered highlight">
+                <thead>
+                    <tr>
+                        <th>Выбор документов</th>
+                        <th>Номер ЭК</th>
+                        <th>Номер документа</th>
+                        <th>Пункт ЭК</th>
+                        <th>Время отправки</th>
+                        <th>Кол-во баллов</th>
+                        <th>Скачать документы</th>
+                    </tr>
+                </thead>
+                {{#each userEKData}}
+                <tbody>
+                    <tr>
+                        <td>
+                            <label for="confirm{{this.id_doc}}">
+                                <input type="checkbox" class="filled-in" name="confirmEK" id="confirm{{this.id_doc}}"/><span/>
+                            </label>         
+                        </td>
+                        <td>{{this.id_ek}}</td>
+                        <td>{{this.id_doc}}</td>
+                        <td>{{this.index_name}}</td>
+                        <td>{{this.id_period}}</td>
+                        <td>{{this.value}}</td>
+                        <td><a href="../uploadedFiles/{{this.login}}/{{this.id_ek}}/{{this.section}}/{{this.index_name}}" target="_blank">Скачать</a></td>
+                    </tr>
+                </tbody>
+                {{/each}}
+            </table>
+            
+	</div>
+	<center><a class="waves-effect waves-light btn red" id="confirmButton">Подтвердить</a></center>

@@ -48,6 +48,33 @@ router.get('/user/admin', async (req, res) => {
         usersData,
     })
 })
+
+router.get('/adminUserEK/:educator_id', async (req, res) => {
+    const educator_id = req.params.educator_id;
+
+    const userEKData = await db.executeQuery(`
+    SELECT DISTINCT 
+        docs.*, eff_contract.checked, employees.login, DATE_FORMAT(docs.id_period, '%y-%m-%d') AS date, LEFT(docs.id_index, 1) AS section, table_index.name AS index_name
+    FROM 
+        docs
+    INNER JOIN 
+        eff_contract ON docs.educator_id = eff_contract.educator_id
+    INNER JOIN 
+        employees ON employees.educator_id = docs.educator_id
+    INNER JOIN 
+        table_index ON table_index.id_index = docs.id_index
+    WHERE 
+        docs.educator_id = ? AND docs.checked = 0;
+    `, [educator_id]);
+
+    res.render('adminUserEK', {
+        title: `Страница подтверждения документов`,
+        isUserEk: true,
+        isAdmin: req.session.isAdmin,
+        userEKData
+    });
+});
+
 // Для всех
 router.get('/profile',(req, res) => {
     //console.log(req.session.isAdmin);
@@ -166,5 +193,7 @@ router.get('/confirmDocument', async (req,res) => {
         confirmData
     })
 })
+
+
 
 module.exports = router;
