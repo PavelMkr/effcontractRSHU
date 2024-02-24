@@ -14,9 +14,9 @@ const userRoutes = require('./routes/user.js');
 const authRoutes = require('./routes/auth.js');
 const uploadRoutes = require('./routes/upload.js');
 
-
 const app = express()// Создаем экземпляр приложения Express
 
+app.use(express.json()) // Middleware для парсинга JSON
 app.use(
   session({
     secret: 'RSHU',

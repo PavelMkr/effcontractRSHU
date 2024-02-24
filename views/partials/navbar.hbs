@@ -1,78 +1,80 @@
-<nav class="nav">
-    <div class="nav-wrapper">
-        {{#if isAdmin}}
-            <a href="/user/admin" class="brand-logo">Эффективный контракт</a>
-        {{/if}}
-        {{#if isPrepod}}
-            <a href="/user/teacher" class="brand-logo">Эффективный контракт</a>
-        {{/if}}
-        {{#if isDekaDir}}
-            <a href="/user/deanOrDirector" class="brand-logo">Эффективный контракт</a>
-        {{/if}}
-        {{#if isZavKaf}}
-            <a href="/user/headOfDepartment" class="brand-logo">Эффективный контракт</a>
-        {{/if}}
-        {{#if (or isAdmin isPrepod isDekaDir isZavKaf)}}
-            <a href="/" class="brand-logo">Эффективный контракт</a>
-        {{/if}}
-
-    <ul id="nav-mobile" class="right hide-on-med-and-down">
-
-        {{#if isHome}}
-
-        {{else}}
+<div class="navbar-fixed">
+    <nav class="nav">
+        <div class="nav-wrapper">
             {{#if isAdmin}}
-                <li>
-                    <a href="/checkedReports">Проверенные отчёты</a>
-                </li>
-                <li>
-                    <a href="/summTable">Сводная таблица</a>
-                </li>
-                <li>
-                    <a href="/profile">Профиль</a>
-                </li>
-                <li>
-                    <a href="/logout">Выход</a>
-                </li>
+                <a href="/user/admin" class="brand-logo">Эффективный контракт</a>
             {{/if}}
             {{#if isPrepod}}
-                <li>
-                    <a href="/profile">Профиль</a>
-                </li>
-                <li>
-                    <a href="/logout">Выход</a>
-                </li>
+                <a href="/user/teacher" class="brand-logo">Эффективный контракт</a>
             {{/if}}
             {{#if isDekaDir}}
-                <li>
-                    <a href="/confirmDocument">Подтверждение ЭК</a>
-                </li>
-                <li>
-                    <a href="/reducingIndicators">Понижающие показатели</a>
-                </li>
-                <li>
-                    <a href="/profile">Профиль</a>
-                </li>
-                <li>
-                    <a href="/logout">Выход</a>
-                </li>
+                <a href="/user/deanOrDirector" class="brand-logo">Эффективный контракт</a>
             {{/if}}
             {{#if isZavKaf}}
-                <li>
-                    <a href="/registerPage">Зарегистрировать</a>
-                </li>
-                <li>
-                    <a href="/reducingIndicators">Понижающие показатели</a>
-                </li>
-                <li>
-                    <a href="/profile">Профиль</a>
-                </li>
-                <li>
-                    <a href="/logout">Выход</a>
-                </li>
+                <a href="/user/headOfDepartment" class="brand-logo">Эффективный контракт</a>
             {{/if}}
-        {{/if}}
-      </ul>
-    </div>
-    <div id="notification"></div>
-  </nav>
+            {{#if (or isAdmin isPrepod isDekaDir isZavKaf)}}
+                <a href="/" class="brand-logo">Эффективный контракт</a>
+            {{/if}}
+
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+
+            {{#if isHome}}
+
+            {{else}}
+                {{#if isAdmin}}
+                    <li>
+                        <a href="/checkedReports">Проверенные отчёты</a>
+                    </li>
+                    <li>
+                        <a href="/summTable">Сводная таблица</a>
+                    </li>
+                    <li>
+                        <a href="/profile">Профиль</a>
+                    </li>
+                    <li>
+                        <a href="/logout">Выход</a>
+                    </li>
+                {{/if}}
+                {{#if isPrepod}}
+                    <li>
+                        <a href="/profile">Профиль</a>
+                    </li>
+                    <li>
+                        <a href="/logout">Выход</a>
+                    </li>
+                {{/if}}
+                {{#if isDekaDir}}
+                    <li>
+                        <a href="/confirmDocument">Подтверждение ЭК</a>
+                    </li>
+                    <li>
+                        <a href="/reducingIndicators">Понижающие показатели</a>
+                    </li>
+                    <li>
+                        <a href="/profile">Профиль</a>
+                    </li>
+                    <li>
+                        <a href="/logout">Выход</a>
+                    </li>
+                {{/if}}
+                {{#if isZavKaf}}
+                    <li>
+                        <a href="/registerPage">Зарегистрировать</a>
+                    </li>
+                    <li>
+                        <a href="/reducingIndicators">Понижающие показатели</a>
+                    </li>
+                    <li>
+                        <a href="/profile">Профиль</a>
+                    </li>
+                    <li>
+                        <a href="/logout">Выход</a>
+                    </li>
+                {{/if}}
+            {{/if}}
+        </ul>
+        </div>
+        <div id="notification"></div>
+    </nav>
+</div>

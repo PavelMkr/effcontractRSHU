@@ -1,6 +1,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Функция для отображения уведомлений
+        function showNotification(message, isError = false) {
+            var notification = $('#notification');
+            notification.text(message);
 
+            // Добавляем класс в зависимости от типа уведомления (ошибки или успеха)
+            if (isError) {
+                notification.addClass('error');
+            } else {
+                notification.removeClass('error');
+            }
+
+            // Плавно показываем и скрываем уведомление
+            notification.fadeIn(500).delay(3000).fadeOut(500);
+        }
+</script>
 
 {{!-- Скрипты страницы, если это декан и/или директор --}}
 {{#if isDekaDir}}  
@@ -69,22 +85,6 @@
                 }
             });
         });
-
-        // Функция для отображения уведомлений
-        function showNotification(message, isError = false) {
-            var notification = $('#notification');
-            notification.text(message);
-
-            // Добавляем класс в зависимости от типа уведомления (ошибки или успеха)
-            if (isError) {
-                notification.addClass('error');
-            } else {
-                notification.removeClass('error');
-            }
-
-            // Плавно показываем и скрываем уведомление
-            notification.fadeIn(500).delay(3000).fadeOut(500);
-        }
     });
 
     // Сумма баллов
@@ -145,19 +145,47 @@
 
     {{#if isUserEk}}
         <script>
-            document.getElementById('confirmButton').addEventListener('click', function() {
-            var checkboxes = document.getElementsByName('confirmEK');
-            var selectedIds = [];
+            document.getElementById('confirmButton').addEventListener('click', async function() {
+                var checkboxes = document.getElementsByName('confirmEK');
+                var selectedIds = [];
 
-            // Проверяем, какие checkbox'ы выбраны
-            for (var i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].checked) {
-                    selectedIds.push(checkboxes[i].value);
+                // Проверяем, какие checkbox'ы выбраны
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].checked) {
+                        selectedIds.push(checkboxes[i].id.substring(7));
+                    }
                 }
-            }
-            });
+                console.log(selectedIds);
+                console.log(selectedIds.length);
 
-            console.log(selectedIds);
+                if (selectedIds.length == 0) {
+                    showNotification('Выберите значение', true);
+                    return;
+                }
+
+                try {
+                    // Выполняем запрос к серверу для обновления данных в БД
+                    const response = await fetch('/confirmDocuments', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(selectedIds),
+                    });
+                    console.log(JSON.stringify(selectedIds));
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        showNotification('Данные успешно обновлены');
+                    } else {
+                        showNotification(data.message, true);
+                    }
+                } catch (error) {
+                    console.error('Ошибка при выполнении запроса:', error);
+                    showNotification('Произошла ошибка', true);
+                }
+            });
         </script>
     {{/if}}
 {{/if}}

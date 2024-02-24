@@ -24,7 +24,7 @@ router.post('/login', (req, res) => {
         } else if (results.length > 0) {
             const user = results[0];
             req.session.user = user;
-            console.log(req.session.user);
+            //console.log(req.session.user);
 
             // Проверка роли пользователя
             if (user.position === 'Prepodavatel') {

@@ -1,9 +1,9 @@
-const { Router } = require('express');
-const router = Router();
+const express = require('express');
+const router = express.Router();
 const multer = require('multer');
 const fs = require('fs');
 const { createPool } = require('mysql2/promise');
-
+const path = require('path');
 
 // Место, куда будут загружены файлы
 const uploadDir = './uploadedFiles';
@@ -110,6 +110,48 @@ router.post('/upload', upload.array('files[]'), async (req, res) => {
         }
         res.status(500).json({ message: 'Ошибка при загрузке файлов' });
     }
+});
+
+router.post('/confirmDocuments', async (req, res) => {
+    const connection = await pool.getConnection();
+    const selectedIds = req.body;
+    console.log('selectedIds:', selectedIds);
+
+    if (!selectedIds || selectedIds.length === 0) {
+        return res.json({ success: false, message: 'Выберите значение' });
+    }
+
+    try {
+        // Обновляем данные в таблице docs
+        for (const idCheck of selectedIds) {
+            await connection.execute('UPDATE docs SET checked = 1 WHERE (id_doc = ?)', [idCheck]);
+        }
+        
+        // Проверяем и обновляем таблицу eff_contract
+        const userCheckedId = await connection.execute('SELECT educator_id FROM docs WHERE id_ek = ?', [selectedIds[0][0]]);
+        console.log('userCheckedId[0][0] =', userCheckedId[0][0].educator_id);
+        await connection.execute('UPDATE eff_contract AS ec SET ec.checked = 1 WHERE ec.checked = 0 AND NOT EXISTS (SELECT 1 FROM docs AS d WHERE d.id_ek = ec.id_ek AND d.checked = 0) and ec.educator_id = 1;', [userCheckedId[0][0].educator_id]);
+
+        await connection.commit();
+
+        connection.release();
+
+        return res.json({ success: true });
+    } catch (error) {
+        console.error('Ошибка при обновлении данных:', error);
+        return res.json({ success: false, message: 'Произошла ошибка' });
+    }
+});
+
+router.get('../uploadedFiles/:login/:id_ek/:section/:index_name', async (req, res) => {
+    const { login, id_ek, section, index_name } = req.params;
+    const filePath = path.join(__dirname, 'uploadedFiles', login, id_ek, section, index_name);
+
+    // Установите правильный заголовок Content-Type для PDF
+    res.setHeader('Content-Type', 'application/pdf');
+
+    // Отправьте файл в ответе
+    res.sendFile(filePath);
 });
 
 
