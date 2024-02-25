@@ -16,6 +16,7 @@ const uploadRoutes = require('./routes/upload.js');
 
 const app = express()// Создаем экземпляр приложения Express
 
+app.use('/uploadedFiles', express.static(path.join(__dirname, 'uploadedFiles'))); // Доступ к папке загрузок
 app.use(express.json()) // Middleware для парсинга JSON
 app.use(
   session({

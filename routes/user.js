@@ -54,7 +54,7 @@ router.get('/adminUserEK/:educator_id', async (req, res) => {
 
     const userEKData = await db.executeQuery(`
     SELECT DISTINCT 
-        docs.*, eff_contract.checked, employees.login, DATE_FORMAT(docs.id_period, '%y-%m-%d') AS date, LEFT(docs.id_index, 1) AS section, table_index.name AS index_name
+        docs.*, eff_contract.checked, employees.login, DATE_FORMAT(docs.id_period, '%y-%m-%d') AS date, LEFT(docs.id_index, 1) AS section, SUBSTRING_INDEX(table_index.name, ' ', 1) AS index_name
     FROM 
         docs
     INNER JOIN 

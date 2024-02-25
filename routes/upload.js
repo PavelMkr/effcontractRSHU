@@ -63,7 +63,7 @@ router.post('/upload', upload.array('files[]'), async (req, res) => {
             const idInput = req.body['id_input'][i]; // Получаем idInput из массива
             const count = req.body['first'][i]; // Получаем count из массива
             const point = req.body['result'][i]; // Получаем point из массива
-            console.log(count, point)
+            //console.log(count, point)
 
 
             const targetPath = `${uploadDir}/${username}/${effContractId}/${index}`;
@@ -115,7 +115,7 @@ router.post('/upload', upload.array('files[]'), async (req, res) => {
 router.post('/confirmDocuments', async (req, res) => {
     const connection = await pool.getConnection();
     const selectedIds = req.body;
-    console.log('selectedIds:', selectedIds);
+    //console.log('selectedIds:', selectedIds);
 
     if (!selectedIds || selectedIds.length === 0) {
         return res.json({ success: false, message: 'Выберите значение' });
@@ -129,7 +129,7 @@ router.post('/confirmDocuments', async (req, res) => {
         
         // Проверяем и обновляем таблицу eff_contract
         const userCheckedId = await connection.execute('SELECT educator_id FROM docs WHERE id_ek = ?', [selectedIds[0][0]]);
-        console.log('userCheckedId[0][0] =', userCheckedId[0][0].educator_id);
+        //console.log('userCheckedId[0][0] =', userCheckedId[0][0].educator_id);
         await connection.execute('UPDATE eff_contract AS ec SET ec.checked = 1 WHERE ec.checked = 0 AND NOT EXISTS (SELECT 1 FROM docs AS d WHERE d.id_ek = ec.id_ek AND d.checked = 0) and ec.educator_id = 1;', [userCheckedId[0][0].educator_id]);
 
         await connection.commit();
@@ -143,9 +143,11 @@ router.post('/confirmDocuments', async (req, res) => {
     }
 });
 
-router.get('../uploadedFiles/:login/:id_ek/:section/:index_name', async (req, res) => {
-    const { login, id_ek, section, index_name } = req.params;
-    const filePath = path.join(__dirname, 'uploadedFiles', login, id_ek, section, index_name);
+router.get('/uploadedFiles/:login/:id_ek/:section/:index_name:file_name', async (req, res) => {
+    const { login, id_ek, section, file_name, index_name } = req.params;
+    //console.log(req.params);
+    const filePath = path.join(__dirname, '..', 'uploadedFiles', login, id_ek, section, index_name + file_name);
+    //console.log(filePath);
 
     // Установите правильный заголовок Content-Type для PDF
     res.setHeader('Content-Type', 'application/pdf');
@@ -153,7 +155,5 @@ router.get('../uploadedFiles/:login/:id_ek/:section/:index_name', async (req, re
     // Отправьте файл в ответе
     res.sendFile(filePath);
 });
-
-
 
 module.exports = router;
