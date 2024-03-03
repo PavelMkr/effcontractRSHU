@@ -127,10 +127,15 @@ router.get('/summTable', async (req, res) => {
 })
 
 router.get('/registerPage', async (req,res) => {
+    const departmentList = await db.executeQuery('SELECT department FROM table_department');
+    const positionList = await db.executeQuery('SELECT position from table_position');
+    console.log(departmentList, positionList)
     res.render('regPage', {
         title: `Страница регистрации`,
         isRegisterPage: true,
-        isZavKaf:true
+        isZavKaf:true,
+        positionList,
+        departmentList
     })
 })
 

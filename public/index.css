@@ -8,7 +8,8 @@
 }
 
 body {
-  background-color: #00a0a3; /* Цвет фона и путь к файлу */;
+  /* background-color: #00a0a3; */
+  background-color: #00a0a3; /* Цвет фона или путь к файлу */;
 }
 .login-win {
   position: absolute;
@@ -16,9 +17,20 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 2rem 2rem;
-  background: white; /* Цвет фона и путь к файлу */
+  background: white; /* Цвет фона или путь к файлу */
   border-radius: 10px;
 }
+
+.form-win {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2rem 2rem;
+  background: white; /* Цвет фона или путь к файлу */
+  border-radius: 10px;
+}
+
 .content {
   margin-top: 0.5rem;
   padding: 2rem 2rem;
