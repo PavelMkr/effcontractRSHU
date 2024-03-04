@@ -27,8 +27,34 @@
 
     {{#if isRegisterPage}}
     <script>
+        // Скрипт списка
         $(document).ready(function(){
             $('select').formSelect();
+        });
+
+        // Обработчик события отправки формы
+        $(document).ready(function() {
+            $('#registrationForm').submit(function(event) {
+                event.preventDefault(); // Предотвратить отправку формы по умолчанию
+
+                // Получение данных формы
+                var formData = $(this).serialize();
+
+                // Отправка данных на сервер
+                $.ajax({
+                    type: 'POST',
+                    url: '/register',
+                    data: formData,
+                    success: function(response) {
+                        // Показать уведомление об успешной регистрации
+                        showNotification(response);
+                    },
+                    error: function(xhr, status, error) {
+                        // Показать уведомление об ошибке регистрации
+                        showNotification('Ошибка при регистрации пользователя', true);
+                    }
+                });
+            });
         });
     </script>
     {{/if}}
