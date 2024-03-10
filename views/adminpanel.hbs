@@ -1,8 +1,9 @@
 <body>
   <div class="content">
-    <input class="form-control" type="text" placeholder="Параметры для фильтрации" id="search-text" onkeyup="filter(this, 'sf2')">
+    
     <th colspan="6"><h2 class="mb-5"><center>Отчеты</center></h2></th>
-    <table id="sf2" class="centered highlight">
+    <table id="sf2" class="centered highlight searchable-table">
+      <input class="search-input" type="text" placeholder="Поиск значения" id="search-text" onkeyup="filter(this, 'sf2')">
       <thead>
         <tr>
           <td><center>ФИО</center></td>

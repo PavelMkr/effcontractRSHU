@@ -108,21 +108,7 @@ router.get('/profile',(req, res) => {
 
 router.get('/checkedReports', async (req, res) => {
     const checkedData = await db.executeQuery(`
-    SELECT
-        eff_contract.id_ek,
-        employees.*,
-        COUNT(CASE WHEN eff_contract.checked = 0 THEN 1 END) AS not_checked,
-        COUNT(*) AS all_ek
-    FROM
-        eff_contract
-    JOIN
-        employees ON eff_contract.educator_id = employees.educator_id
-    WHERE
-        eff_contract.checked = 1
-    GROUP BY
-        eff_contract.educator_id, eff_contract.id_ek;
-    `);
-    // console.log(checkedData)
+    SELECT * FROM eff_contract,employees where checked=1 and eff_contract.educator_id=employees.educator_id`);
     res.render('checkedReports', {
         title: `Проверенные отчеты`,
         isCheckedReports: true,
