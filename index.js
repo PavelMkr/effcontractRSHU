@@ -13,6 +13,7 @@ const homeRoutes = require('./routes/home.js');
 const userRoutes = require('./routes/user.js');
 const authRoutes = require('./routes/auth.js');
 const uploadRoutes = require('./routes/upload.js');
+const excelRoutes = require('./routes/excel.js');
 
 const app = express()// Создаем экземпляр приложения Express
 
@@ -64,6 +65,7 @@ app.use(homeRoutes)
 app.use(userRoutes)
 app.use(authRoutes)
 app.use(uploadRoutes)
+app.use(excelRoutes)
 
 app.use(errorHandler)
 

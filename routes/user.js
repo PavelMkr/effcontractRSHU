@@ -75,6 +75,19 @@ router.get('/adminUserEK/:educator_id', async (req, res) => {
     });
 });
 
+router.get('/summtable', async (req, res) => {
+    const departmentList = await db.executeQuery('SELECT department FROM table_department');
+    const positionList = await db.executeQuery('SELECT position FROM table_position WHERE position != "admin"');
+    console.log(departmentList, positionList);
+    res.render('summtable', {
+        title: `Сводная таблица`,
+        isSummTable: true,
+        isAdmin: req.session.isAdmin,
+        departmentList,
+        positionList
+    })
+});
+
 // Для всех
 router.get('/profile',(req, res) => {
     //console.log(req.session.isAdmin);
@@ -115,14 +128,6 @@ router.get('/checkedReports', async (req, res) => {
         isCheckedReports: true,
         isAdmin: true,
         checkedData
-    })
-})
-
-router.get('/summTable', async (req, res) => {
-    res.render('summtable', {
-        title: `Сводная таблица`,
-        isSummTable: true,
-        isAdmin: true
     })
 })
 

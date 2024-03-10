@@ -16,6 +16,11 @@
             // Плавно показываем и скрываем уведомление
             notification.fadeIn(500).delay(3000).fadeOut(500);
         }
+
+    // Скрипт списка
+        $(document).ready(function(){
+            $('select').formSelect();
+        });
 </script>
 
 {{!-- Скрипты страницы, если это декан и/или директор --}}
@@ -27,10 +32,6 @@
 
     {{#if isRegisterPage}}
     <script>
-        // Скрипт списка
-        $(document).ready(function(){
-            $('select').formSelect();
-        });
 
         // Обработчик события отправки формы
         $(document).ready(function() {
@@ -151,13 +152,14 @@
 {{!-- Скрипты страницы, если это админ --}}
 {{#if isAdmin}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
 <script>
     function filter(input, tableId) {
         var searchText = input.value.toLowerCase();
         var table = document.getElementById(tableId);
         var rows = table.getElementsByTagName('tr');
 
-        for (var i = 0; i < rows.length; i++) {
+        for (var i = 0; i < length; i++) {
             var cells = rows[i].getElementsByTagName('td');
             var found = false;
             for (var j = 0; j < cells.length; j++) {
@@ -232,7 +234,7 @@
                     switching = false;
                     rows = table.rows;
                     /* Проход по всем строкам кроме заголовков */
-                    for (i = 1; i < (rows.length - 1); i++) {
+                    for (i = 1; i < (length - 1); i++) {
                         shouldSwitch = false;
                         /* Получение элементов для сравнения один за другим */
                         x = rows[i].getElementsByTagName("td")[n];
@@ -268,5 +270,57 @@
                 }
             };
         </script>
+    {{/if}}
+
+    {{#if isSummTable}}
+        <script>
+            $(document).ready(function() {
+                // Устанавливаем обработчик события на кнопку "Создать"
+                $('#createForm').on('submit', function(e) {
+                    createTable(); // Вызываем функцию для создания таблицы
+                });
+            });
+
+            function createTable() {
+                // Получаем значения из формы
+                const department = $('select[name="department"]').val();
+                const position = $('select[name="position"]').val();
+
+                // Отправляем AJAX запрос на сервер
+                $.ajax({
+                    url: '/createTable',
+                    method: 'GET',
+                    data: { department, position },
+                    success: function(response) {
+                        createTableWithJQuery(response);
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                });
+            }
+
+            function createTableWithJQuery(response) {
+                // Проверяем, есть ли данные в ответе
+                if (response && response.length > 0) {
+                    var tableHtml = '<table class="centered highlight"><thead><tr><th>ФИО</th><th>Должность</th><th>Кафедра</th><th>Количество баллов</th></tr></thead><tbody><button class="waves-effect waves-light btn" type="button" onclick="downloadTable()">Скачать таблицу</button>';
+
+                    response.forEach(function(rowData) {
+                        tableHtml += '<tr><td>' + rowData.last_name + ' ' + rowData.name_real + ' ' + rowData.patronymic + '</td><td>' + rowData.position + '</td><td>' + rowData.department + '</td><td>' + rowData.userScore +'</td></tr>';
+                    });
+
+                    tableHtml += '</tbody></table>';
+                    $('#table-response').html(tableHtml);
+                } else {
+                    // Если данных нет, выводим сообщение
+                    $('#table-response').html('<h3>Значений не найдено</h3>');
+                }
+            }
+
+            function downloadTable() {
+                console.log('Скачать таблицу')
+            }
+        </script>
+
     {{/if}}
 {{/if}}
