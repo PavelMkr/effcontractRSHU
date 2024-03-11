@@ -9,7 +9,7 @@
                                 <th><center>ФИО</center></th>
                                 {{!-- <th><center>Должность</center></th> --}}
                                 <th><center>Номер ЭК</center></th>
-                                <th><center>Подтвердить ЭК /center></th>
+                                <th><center>Подтвердить ЭК</th>
                             </tr>
                         </thead>
                         {{#each confirmData}}
@@ -18,7 +18,7 @@
                                     <td>{{ this.last_name}} {{this.name_real}} {{this.patronymic}}</td>
                                     <td{{ this.position }}></td>
                                     <td>{{ this.id_ek }}</td>
-                                    <td><a href="" class="floating-button">Открыть папку</a></td>
+                                    <td><a href="" class="floating-button waves-effect waves-light btn">Открыть папку</a></td>
                                 </tr>  
                         </tbody>  
                         {{/each}}   

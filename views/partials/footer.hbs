@@ -79,7 +79,7 @@
      // Скрипт загрузки файлов
     $(document).ready(function() {
         // Обработчик события клика на кнопку "Отправить"
-        $('input[name="uploadBtn"]').click(function(event) {
+        $('button[name="uploadBtn"]').click(function(event) {
             event.preventDefault(); // Предотвращаем стандартное поведение кнопки
 
             // Создаем объект FormData для всех файлов
@@ -290,7 +290,7 @@
             function createTableWithJQuery(response) {
                 // Проверяем, есть ли данные в ответе
                 if (response && response.length > 0) {
-                    var tableHtml = '<table class="striped centered highlight searchable-table"><thead><tr><th>ФИО</th><th>Должность</th><th>Кафедра</th><th>Количество баллов</th></tr></thead><tbody><button class="waves-effect waves-light btn" type="button" onclick="downloadTable()">Скачать таблицу</button>';
+                    var tableHtml = '<div class="content"><table class="striped centered highlight searchable-table"><thead><tr><th>ФИО</th><th>Должность</th><th>Кафедра</th><th>Количество баллов</th></tr></thead><tbody><button class="waves-effect waves-light btn red" type="button" onclick="downloadTable()">Скачать таблицу</button></div>';
 
                     response.forEach(function(rowData) {
                         tableHtml += '<tr><td>' + rowData.last_name + ' ' + rowData.name_real + ' ' + rowData.patronymic + '</td><td>' + rowData.position + '</td><td>' + rowData.department + '</td><td>' + rowData.userScore +'</td></tr>';

@@ -143,6 +143,19 @@ router.post('/confirmDocuments', async (req, res) => {
     }
 });
 
+router.get('/reducingIndicators/:id_ek', async (req, res) => {
+    const id_ek = req.params.id_ek;
+
+    res.render('lowballPage', {
+        title: 'Страница понижения показателей',
+        isLowballPage: true,
+        userIdEk: id_ek,
+        isDekaDir: req.session.user
+    }
+        
+    );
+});
+
 router.get('/uploadedFiles/:login/:id_ek/:section/:index_name:file_name', async (req, res) => {
     const { login, id_ek, section, file_name, index_name } = req.params;
     //console.log(req.params);
