@@ -82,7 +82,7 @@ router.post('/register', async (req, res) => {
         const existingUser = await db.executeQuery('SELECT login FROM employees WHERE login = ?', [username]);
 
         if (existingUser.length > 0) {
-            console.log('Пользователь с таким логином уже существует');
+            //console.log('Пользователь с таким логином уже существует');
             return res.status(400).send('Пользователь с таким логином уже существует');
         }
 
@@ -92,7 +92,7 @@ router.post('/register', async (req, res) => {
         // Добавление пользователя в базу данных
         await db.executeQuery('INSERT INTO employees (educator_id, last_name, name_real, patronymic, department, position, stavka, login, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [lastCount[0]['count'], lastname, firstname, patronymic, department, position, stavka, username, hashedPassword]);
 
-        console.log('Пользователь успешно зарегистрирован в системе');
+        //console.log('Пользователь успешно зарегистрирован в системе');
         return res.status(200).send('Пользователь успешно зарегистрирован в системе');
     } catch (error) {
         console.error('Ошибка при регистрации пользователя', error);

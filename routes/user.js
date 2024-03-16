@@ -78,7 +78,7 @@ router.get('/adminUserEK/:educator_id', async (req, res) => {
 router.get('/summtable', async (req, res) => {
     const departmentList = await db.executeQuery('SELECT department FROM table_department');
     const positionList = await db.executeQuery('SELECT position FROM table_position WHERE position != "admin"');
-    console.log(departmentList, positionList);
+    //console.log(departmentList, positionList);
     res.render('summtable', {
         title: `Сводная таблица`,
         isSummTable: true,

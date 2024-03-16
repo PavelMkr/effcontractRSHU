@@ -4,6 +4,7 @@ const multer = require('multer');
 const fs = require('fs');
 const { createPool } = require('mysql2/promise');
 const path = require('path');
+const { route } = require('./user');
 
 // Место, куда будут загружены файлы
 const uploadDir = './uploadedFiles';
