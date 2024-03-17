@@ -120,7 +120,6 @@ router.get('/checkedReports', async (req, res) => {
 router.get('/registerPage', async (req,res) => {
     const departmentList = await db.executeQuery('SELECT department FROM table_department');
     const positionList = await db.executeQuery('SELECT position from table_position WHERE position != "admin"');
-    console.log(departmentList, positionList)
     res.render('regPage', {
         title: `Страница регистрации`,
         isRegisterPage: true,
@@ -168,7 +167,7 @@ router.get('/reducingIndicators', async (req,res) => {
         isDekaDir: req.session.isDekaDir,
         lowBallData
     })
-})
+});
 
 router.get('/confirmDocument', async (req,res) => {
     const confirmData = await db.executeQuery(`

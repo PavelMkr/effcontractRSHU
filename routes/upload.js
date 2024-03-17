@@ -113,6 +113,77 @@ router.post('/upload', upload.array('files[]'), async (req, res) => {
     }
 });
 
+router.post('/uploadLowball/:id_ek', upload.array('files[]'), async (req, res) => {
+    const effContractId = req.params.id_ek;
+    
+    const connection = await pool.getConnection();
+
+    try {
+        await connection.beginTransaction();
+
+        // Проверка наличия загруженных файлов
+        if (!req.files || req.files.length === 0) {
+            return res.status(400).json({ message: 'Нет файлов для загрузки' })
+        }
+        const educatorIdconn = await connection.execute('SELECT educator_id FROM eff_contract WHERE id_ek = ?', [effContractId]);
+        educatorId = educatorIdconn[0][0].educator_id;
+        const usernameconn = await connection.execute('SELECT login FROM employees WHERE educator_id = ?', [educatorId]);
+        username = usernameconn[0][0].login;
+        
+        // Цикл по каждому файлу
+        for (let i = 0; i < req.files.length; i++) {
+            const file = req.files[i]; // Получаем файл
+            file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8') // Исправление названия файлов
+            const index = req.body['index'][i]; // Получаем индекс из массива
+            const idInput = req.body['id_input'][i]; // Получаем idInput из массива
+            const point = req.body['result'][i]; // Получаем point из массива
+
+
+            const targetPath = `${uploadDir}/${username}/${effContractId}/${index}`;
+            if (!fs.existsSync(targetPath)) {
+                fs.mkdirSync(targetPath, { recursive: true }, (err) => {
+                    if (err) {
+                        console.error('Ошибка при создании директории:', err);
+                    }
+                });
+            }
+
+            const nameIndexFull = await connection.execute(
+                'SELECT name FROM table_index WHERE id_index = ?', [idInput]
+            );
+            const nameIndex = nameIndexFull[0][0].name.split(' ')[0];
+
+            await fs.promises.rename(file.path, `${targetPath}/${nameIndex} ${file.originalname}`);
+            await connection.execute(
+                'INSERT INTO docs (id_ek, educator_id, id_index, count, value, file_name) VALUES (?, ?, ?, ?, ?, ?)', [effContractId, educatorId, idInput, 1, point, file.originalname]);
+        }
+
+        // Обновляем all_value в ЭК после загрузки файлов
+        await connection.execute(`
+            UPDATE eff_contract AS ec
+            SET all_value = (
+                SELECT SUM(d.value)
+                FROM docs AS d
+                WHERE d.id_ek = ec.id_ek
+            )
+            WHERE ec.id_ek = ?
+        `, [effContractId]);
+
+        await connection.commit();
+
+        connection.release();
+
+        res.status(200).json({ message: 'Файлы успешно загружены' });
+    } catch (error) {
+        console.error('Ошибка при загрузке файлов:', error);
+        if (connection) {
+            await connection.rollback();
+            connection.release();
+        }
+        res.status(500).json({ message: 'Ошибка при загрузке файлов' });
+    }  
+});
+
 router.post('/confirmDocuments', async (req, res) => {
     const connection = await pool.getConnection();
     const selectedIds = req.body;

@@ -38,7 +38,61 @@
 {{!-- Скрипты страницы, если это декан и/или директор --}}
 {{#if isDekaDir}}  
 {{/if}}
-    
+{{#if isLowballPage}}
+<script>
+    // Скрипт загрузки файлов
+    $(document).ready(function() {
+        // Обработчик события клика на кнопку "Отправить"
+        $('button[name="lowballUploadBtn"]').click(function(event) {
+            event.preventDefault(); // Предотвращаем стандартное поведение кнопки
+
+            // Создаем объект FormData для всех файлов
+            var formData = new FormData();
+
+            var id_ek = {{userIdEk}};
+            formData.append('id_ek', id_ek);
+            // Цикл по каждому элементу с классом file-input
+            $('.file-input').each(function() {
+                var files = $(this)[0].files;
+
+                // Добавляем файлы и информацию о них в formData
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    var index = $(this).data('index');
+                    var idInput = $(this).data('id-input');
+                    var idResult = $(this).data('result-id');
+                    var userId = $(this).data('user-id');
+                    var point = $(this).data('point');
+
+                    formData.append('files[]', file);
+                    formData.append('index[]', index);
+                    formData.append('id_result[]', idResult);
+                    formData.append('id_input[]', idInput);
+                    formData.append('result[]', point);
+                }
+            });
+
+            // Отправляем AJAX запрос на сервер
+            $.ajax({
+                url: '/uploadLowball/'+ id_ek,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    // Отображаем уведомление на странице
+                    showNotification(response.message);
+                },
+                error: function(xhr, status, error) {
+                    // Отображаем уведомление о ошибке
+                    showNotification('Ошибка загрузки файла: ' + error, true);
+                    $('input[name="files[]"]').val(''); // Очистка инпутов
+                }
+            });
+        });
+    });
+</script>
+{{/if}}
 {{!-- Скрипты страницы, если это завкафедры --}}
 {{#if isZavKaf}} 
 

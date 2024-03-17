@@ -13,7 +13,7 @@
     "NodeJS",
     "web"
   ],
-  "author": "",
+  "author": "PavelMkr",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
