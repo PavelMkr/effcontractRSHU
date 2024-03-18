@@ -121,6 +121,98 @@
         document.getElementById("result").innerText = sum;
     }
 </script>
+    {{#if isUserEk}}
+        <script>
+            document.getElementById('confirmButton').addEventListener('click', async function() {
+                var checkboxes = document.getElementsByName('confirmEK');
+                var selectedIds = [];
+
+                // Проверяем, какие checkbox'ы выбраны
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].checked) {
+                        selectedIds.push(checkboxes[i].id.substring(7));
+                    }
+                }
+                //console.log(selectedIds);
+                //console.log(selectedIds.length);
+
+                if (selectedIds.length == 0) {
+                    showNotification('Выберите значение', true);
+                    return;
+                }
+
+                try {
+                    // Выполняем запрос к серверу для обновления данных в БД
+                    const response = await fetch('/confirmDocuments', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(selectedIds),
+                    });
+                    //console.log(JSON.stringify(selectedIds));
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        showNotification('Данные успешно обновлены');
+                    } else {
+                        showNotification(data.message, true);
+                    }
+                } catch (error) {
+                    console.error('Ошибка при выполнении запроса:', error);
+                    showNotification('Произошла ошибка', true);
+                }
+            });
+
+            function sortTable(n) {
+                var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+                table = document.getElementById("userDocs");
+                switching = true;
+                // Установка порядка сортировки в прямой
+                dir = "asc";
+                /* Сделать цикл, который будет продолжаться до тех пор, пока не будет произведена сортировка */
+                while (switching) {
+                    switching = false;
+                    rows = table.rows;
+                    /* Проход по всем строкам кроме заголовков */
+                    for (i = 1; i < (length - 1); i++) {
+                        shouldSwitch = false;
+                        /* Получение элементов для сравнения один за другим */
+                        x = rows[i].getElementsByTagName("td")[n];
+                        y = rows[i + 1].getElementsByTagName("td")[n];
+                        /* Проверка нужно ли поменять местами */
+                        if (dir === "asc") {
+                            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                                // Если нужно поменять местами, поменять флаг и выйти из цикла
+                                shouldSwitch = true;
+                                break;
+                            }
+                        } else if (dir === "desc") {
+                            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                                // Если нужно поменять местами, поменять флаг и выйти из цикла
+                                shouldSwitch = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (shouldSwitch) {
+                        /* Если флаг был установлен, выполнить обмен строк и пометить, что обмен был выполнен */
+                        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                        switching = true;
+                        // Увеличение счетчика обмена
+                        switchcount++;
+                    } else {
+                        /* Если обмен не был выполнен и порядок сортировки - прямой, установить порядок обратно и перейти к следующему столбцу */
+                        if (switchcount === 0 && dir === "asc") {
+                            dir = "desc";
+                            switching = true;
+                        }
+                    }
+                }
+            };
+        </script>
+    {{/if}}
 {{/if}}
 {{#if isLowballPage}}
 <script>

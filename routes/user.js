@@ -49,7 +49,7 @@ router.get('/user/admin', async (req, res) => {
     })
 })
 
-router.get('/adminUserEK/:educator_id', async (req, res) => {
+router.get('/userEK/:educator_id', async (req, res) => {
     const educator_id = req.params.educator_id;
 
     const userEKData = await db.executeQuery(`
@@ -67,10 +67,11 @@ router.get('/adminUserEK/:educator_id', async (req, res) => {
         docs.educator_id = ? AND docs.checked = 0;
     `, [educator_id]);
 
-    res.render('adminUserEK', {
+    res.render('userEK', {
         title: `Страница подтверждения документов`,
         isUserEk: true,
         isAdmin: req.session.isAdmin,
+        isDekaDir: req.session.isDekaDir,
         userEKData
     });
 });
