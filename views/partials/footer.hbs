@@ -573,6 +573,7 @@
     {{/if}}
 
     {{#if isSummTable}}
+        <script lang="javascript" src="dist/xlsx.full.min.js"></script>
         <script>
             $(document).ready(function() {
                 // Устанавливаем обработчик события на кнопку "Создать"
@@ -603,7 +604,7 @@
             function createTableWithJQuery(response) {
                 // Проверяем, есть ли данные в ответе
                 if (response && response.length > 0) {
-                    var tableHtml = '<div class="content"><table class="striped centered highlight searchable-table"><thead><tr><th>ФИО</th><th>Должность</th><th>Кафедра</th><th>Количество баллов</th></tr></thead><tbody><button class="waves-effect waves-light btn red" type="button" onclick="downloadTable()">Скачать таблицу</button></div>';
+                    var tableHtml = '<div class="content"><table id="summTableResponse" class="striped centered highlight searchable-table"><thead><tr><th>ФИО</th><th>Должность</th><th>Кафедра</th><th>Количество баллов</th></tr></thead><tbody><button class="waves-effect waves-light btn red" type="button" onclick="downloadTable()">Скачать таблицу</button></div>';
 
                     response.forEach(function(rowData) {
                         tableHtml += '<tr><td>' + rowData.last_name + ' ' + rowData.name_real + ' ' + rowData.patronymic + '</td><td>' + rowData.position + '</td><td>' + rowData.department + '</td><td>' + rowData.userScore +'</td></tr>';
@@ -618,8 +619,44 @@
             }
 
             function downloadTable() {
-                console.log('Скачать таблицу')
+                // Извлечение данных из таблицы
+                var tableData = [];
+
+                // Извлекаем названия колонок из заголовков таблицы
+                var headers = [];
+                $('#summTableResponse thead th').each(function() {
+                    headers.push($(this).text());
+                });
+
+                // Извлекаем данные из таблицы и добавляем их в массив tableData
+                $('#summTableResponse tbody tr').each(function() {
+                    var rowData = {};
+                    $(this).find('td').each(function(colIndex, col) {
+                        rowData[headers[colIndex]] = $(col).text();
+                    });
+                    tableData.push(rowData);
+                });
+
+                // Создаем новую книгу Excel
+                var workbook = XLSX.utils.book_new();
+                var worksheet = XLSX.utils.json_to_sheet(tableData);
+
+                // Добавляем рабочий лист к книге
+                XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+
+                // Преобразуем книгу Excel в бинарный формат (arraybuffer)
+                var excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+                // Создаем Blob из бинарных данных
+                var blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+                // Создаем ссылку для скачивания файла
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = 'table.xlsx';
+                link.click();
             }
+
         </script>
 
     {{/if}}

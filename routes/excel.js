@@ -2,9 +2,8 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db'); // Подключение бд
-const multer = require('multer');
 const { createPool } = require('mysql2/promise');
-const ExcelJS = require('exceljs');
+
 
 // Создаем пул соединений к базе данных
 const pool = new createPool({
@@ -16,7 +15,6 @@ const pool = new createPool({
     connectionLimit: 10,
     queueLimit: 0
 });
-
 
 router.get('/createTable', async (req, res) => {
     try {
