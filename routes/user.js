@@ -109,7 +109,22 @@ router.get('/profile',(req, res) => {
 
 router.get('/checkedReports', async (req, res) => {
     const checkedData = await db.executeQuery(`
-    SELECT * FROM eff_contract,employees where checked=1 and eff_contract.educator_id=employees.educator_id`);
+    SELECT 
+        emp.last_name,
+        emp.name_real,
+        emp.patronymic,
+        emp.position,
+        emp.educator_id,
+        ec.id_ek,
+        ec.all_value AS all_ek
+    FROM 
+        eff_contract AS ec
+    JOIN 
+        employees AS emp ON ec.educator_id = emp.educator_id
+    WHERE 
+        ec.checked = 1
+    GROUP BY 
+        ec.id_ek;`);
     res.render('checkedReports', {
         title: `Проверенные отчеты`,
         isCheckedReports: true,
