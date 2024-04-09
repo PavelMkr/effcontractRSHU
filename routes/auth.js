@@ -19,7 +19,7 @@ router.use(
       const { username, password } = req.body; // Данные не зашифрованы
   
       // Поиск пользователя в базе данных
-      db.query('SELECT * FROM employees WHERE login = ?', [username], (error, results) => {
+      db.query('SELECT * FROM employees WHERE BINARY login = ?', [username], (error, results) => {
           if (error) {
               console.error(error);
               res.status(500).send('Error logging in');

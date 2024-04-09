@@ -220,7 +220,9 @@ router.get('/reducingIndicators/:id_ek', async (req, res) => {
         title: 'Страница понижения показателей',
         isLowballPage: true,
         userIdEk: id_ek,
-        isDekaDir: req.session.user
+        isAdmin: req.session.isAdmin,
+        isZavKaf: req.session.isZavKaf,
+        isDekaDir: req.session.isDekaDir
     }
         
     );

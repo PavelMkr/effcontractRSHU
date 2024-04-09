@@ -366,6 +366,20 @@
                 // Получение данных формы
                 var formData = $(this).serialize();
 
+                // Проверка на пустые значения полей
+                var isEmptyField = false;
+                $(this).find('input[name="username"], input[name="password"], select[name="department"]').each(function() {
+                    if ($(this).val() === '') {
+                        isEmptyField = true;
+                        return false; // Прервать цикл, если найдено пустое поле
+                    }
+                });
+
+                if (isEmptyField) {
+                    // Если найдено пустое поле, отобразить сообщение об ошибке
+                    showNotification('Пожалуйста, заполните все поля', true);
+                    return; // Прервать отправку формы
+                }
                 // Отправка данных на сервер
                 $.ajax({
                     type: 'POST',
